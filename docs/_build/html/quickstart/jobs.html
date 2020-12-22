@@ -1,0 +1,505 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Distributed Training" href="distributed-training.html" /><link rel="prev" title="Cloud Setup" href="../overview/setup.html" />
+
+    <meta name="generator" content="sphinx-3.4.0, furo 2020.12.09.beta21"/>
+        <title>Train Models (Create Jobs) - azure.ml 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/styles/furo.css?digest=a3f371badb8538d75df213ccffb17a4f6e8f3ac5">
+    <link rel="stylesheet" href="../_static/pygments.css">
+    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
+    
+
+
+<style>
+  :root {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+  }
+
+  /* For allowing end-user-specific overrides */
+  .override-light {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  .override-dark {
+    --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+  }
+</style><link id="pygments_dark_css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css" href="../_static/pygments_dark.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" href="../_static/styles/furo-extensions.css?digest=26485485040e7aaf717c13fd0188a5ad2c2deb60">
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script defer src="../_static/jquery.js"></script>
+    <script defer src="../_static/underscore.js"></script>
+    <script defer src="../_static/doctools.js"></script>
+    <script defer src="../_static/clipboard.min.js"></script>
+    <script defer src="../_static/copybutton.js"></script>
+    <script defer src="../_static/togglebutton.js"></script>
+    <script defer >var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script defer src="../_static/scripts/main.js?digest=e931d09b2a40c1bb82b542effe772014573baf67"></script></head>
+  <body dir="">
+    
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke-width="1.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z"/>
+      <line x1="4" y1="6" x2="20" y2="6" />
+      <line x1="10" y1="12" x2="20" y2="12" />
+      <line x1="6" y1="18" x2="20" y2="18" />
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="feather feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="feather feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">azure.ml 0.1.0 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">azure.ml 0.1.0 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html">
+  <input class="sidebar-search" placeholder="Search" name="q">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/setup.html">Cloud Setup</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Train Models (Create Jobs)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="distributed-training.html">Distributed Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="endpoints.html">Deploy Models (WIP)</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../overview/concepts.html">Concepts</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../overview/concepts/data.html">Manage Data Assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/concepts/data.html#manage-datastore-connections">Manage Datastore Connections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/concepts/job.html">Manage Jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/concepts/model.html">Manage Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/concepts/endpoint.html">Manage Endpoints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/concepts/environment.html">Manage Environments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/concepts/compute.html">Compute Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/concepts/workspace.html">Workspace</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../reference/templates.html">ARM Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/feedback.html">Feedback</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/qna.html">Q&amp;A</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+
+</div>
+</div>
+      </div>
+      
+    </div>
+  </aside>
+  <main class="main">
+    <div class="content">
+      <article role="main">
+        <label class="toc-overlay-icon toc-content-icon" for="__toc">
+          <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+        </label>
+        <div class="section" id="train-models-create-jobs">
+<h1>Train Models (Create Jobs)<a class="headerlink" href="#train-models-create-jobs" title="Permalink to this headline">¶</a></h1>
+<p>A Job is a Resource that specifies all aspects of a computation job. It aggregates 3 things:</p>
+<ol class="arabic simple">
+<li><p>What to run</p></li>
+<li><p>How to run it</p></li>
+<li><p>Where to run it</p></li>
+</ol>
+<p>A user can execute a job via the CLI by executing an <cite>az ml job create</cite> command. The examples below encapsulate how a user might expand their job definition as they progress with their work.</p>
+<div class="section" id="create-your-first-job">
+<h2>Create your first job<a class="headerlink" href="#create-your-first-job" title="Permalink to this headline">¶</a></h2>
+<p>For this example, we’ll simply clone the v2 preview repo and run the first example!</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/Azure/azureml-v2-preview
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To authenticate the git clone, you may need a PAT. You can generate one here: <a class="reference external" href="https://github.com/settings/tokens">https://github.com/settings/tokens</a> (use anything as username, the PAT as your password)**</p>
+</div>
+<p>Check that a compute cluster exists in your workspace and you have a compute cluster named <strong>goazurego</strong> (if not, you can modify the name of the cluster in your YML file).</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>az ml job create --file azureml-v2-preview/examples/train/basic-command-job/hello_python_job.yml
+</pre></div>
+</div>
+<p>This will run a simple “hello world” python script. Here is the YML that we ran.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># yaml-language-server: $schema=https://azuremlsdk2.blob.core.windows.net/latest/commandJob.schema.json</span>
+<span class="nt">command</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">python hello.py</span>
+<span class="nt">code</span><span class="p">:</span>
+  <span class="nt">directory</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">src</span>
+<span class="nt">environment</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">azureml:AzureML-Minimal:1</span>
+<span class="nt">compute</span><span class="p">:</span>
+  <span class="nt">target</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">azureml:goazurego</span>
+</pre></div>
+</div>
+<p>Let’s continue by going into more details on the job specification.</p>
+<div class="section" id="understanding-a-job-specification">
+<h3>Understanding a job specification<a class="headerlink" href="#understanding-a-job-specification" title="Permalink to this headline">¶</a></h3>
+<p>The following is a fully fleshed out job specification YML:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># yaml-language-server: $schema=https://azuremlsdk2.blob.core.windows.net/latest/commandJob.schema.json</span>
+<span class="nt">code</span><span class="p">:</span> 
+  <span class="nt">directory</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">train</span>
+<span class="nt">command</span><span class="p">:</span> <span class="p p-Indicator">&gt;-</span>
+  <span class="no">python train.py </span>
+  <span class="no">--data {inputs.training_data} </span>
+<span class="nt">environment</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">azureml:xgboost-env:1</span>
+<span class="nt">compute</span><span class="p">:</span>
+  <span class="nt">target</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">azureml:goazurego</span>
+<span class="nt">inputs</span><span class="p">:</span>
+  <span class="nt">training_data</span><span class="p">:</span>
+    <span class="nt">data</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">azureml:irisdata:1</span>
+    <span class="nt">mode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Mount</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">name</span></code> is the user defined run name which needs to be <strong>unique</strong>. <strong>If you do not provide a name a GUID name will be generated for you.</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>By default, runs are created in an Experiment called “Default”. If you want to use a different experiment name, you can use the parameter <strong>experiment_name.</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> and other parameters can be overwritten from the command line. For example: <code class="docutils literal notranslate"><span class="pre">`az</span> <span class="pre">ml</span> <span class="pre">job</span> <span class="pre">create</span> <span class="pre">--file</span> <span class="pre">azureml-v2-preview/examples/commandjob.yml</span> <span class="pre">--name</span> <span class="pre">test2`</span></code></p></li>
+</ul>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">code</span> <span class="pre">/</span> <span class="pre">directory</span></code> is the path to your code directory relative to where the YML file lives.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>This directory is uploaded as a snapshot to Azure ML and mounted to your job for execution.</p></li>
+<li><p>All of the files from ‘directory’ are uploaded as a snapshot before the job is created and can be viewed in the Snapshot page of the run from Studio UI.</p></li>
+</ul>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">command</span></code> parameter refers to the command that gets run on the remote compute.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">command</span></code> executes from the root of the code directory defined above.</p></li>
+<li><p>This is typically the command, example: <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">train.py</span></code> or <code class="docutils literal notranslate"><span class="pre">Rscript</span> <span class="pre">train.R</span></code> and can include as many arguments as you desire.</p></li>
+</ul>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">environment</span></code> is a definition or reference of the docker image virtual environment you want to run your job in.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">azureml:</span></code> is a special moniker used to refer to an existing entity within the workspace.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">azureml:AzureML-Minimal:1</span></code> is expecting that version 1 of an environment called AzureML-Minimal exists in the current workspace.</p></li>
+</ul>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">compute</span></code> is the definition of where you want to run your job</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">azureml:testCompute</span></code> refers to a compute cluster called ‘testCompute’ in the current workspace.</p></li>
+<li><p>You can override the compute (or any parameter) by using <a href="#id1"><span class="problematic" id="id2">``</span></a>–set compute.target=azureml:cpu-cluster</p></li>
+</ul>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">inputs</span></code> is used to define data you want mounted or downloaded into your job.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code> is the reference pointer to the dataset you want to use</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mode</span></code> indicates how you want the data made available in the job. Mount and Download are the two supported options.</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="real-training-examples">
+<h3>Real training examples<a class="headerlink" href="#real-training-examples" title="Permalink to this headline">¶</a></h3>
+<p>Here’s an example that runs  <strong>Python code.</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>az ml environment create --file examples/environments/tensorflow/tf_env.yml
+az ml job create --file examples/train/tensorflow/mnist/tf_mnist_job.yml
+</pre></div>
+</div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># yaml-language-server: $schema=https://azuremlsdk2.blob.core.windows.net/latest/commandJob.schema.json</span>
+<span class="nt">code</span><span class="p">:</span> 
+  <span class="nt">directory</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">./src</span>
+<span class="nt">command</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">python train.py</span>
+<span class="nt">environment</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">azureml:tf-env:1</span>
+<span class="nt">experiment_name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tf-mnist</span>
+<span class="nt">compute</span><span class="p">:</span>
+  <span class="nt">target</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">azureml:goazurego</span>
+</pre></div>
+</div>
+<p>Here’s an example that runs <strong>R code:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>az ml environment create --file examples/train/r/r_cran_env.yml
+az ml job create --file examples/train/r/r_job.yml
+</pre></div>
+</div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">r-job-example</span>
+<span class="nt">code</span><span class="p">:</span>
+  <span class="nt">directory</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">./src</span>
+<span class="nt">command</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Rscript accidents.R</span>
+<span class="nt">environment</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">azureml:r-with-optparse:1</span>
+<span class="nt">experiment_name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">r-accidents</span>
+<span class="nt">compute</span><span class="p">:</span>
+  <span class="nt">target</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">azureml:testCompute</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="train-an-xgboost-model">
+<h2>Train an XGBoost model<a class="headerlink" href="#train-an-xgboost-model" title="Permalink to this headline">¶</a></h2>
+<p>Next, let’s train an xgboost model on an IRIS dataset.</p>
+<p>Let’s navigate to the examples/iris directory in the repository and see what we should do next.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> ./examples/iris/
+</pre></div>
+</div>
+<div class="section" id="define-your-environment">
+<h3>Define your environment<a class="headerlink" href="#define-your-environment" title="Permalink to this headline">¶</a></h3>
+<p>First we are going to define the xgboost environment we want to run.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># yaml-language-server: $schema=https://azuremlsdk2.blob.core.windows.net/latest/environment.schema.json</span>
+<span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">xgboost-env</span>
+<span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="nt">conda_file</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">xgboost-conda.yml</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>az ml environment create --file xgboost-env.yml
+</pre></div>
+</div>
+</div>
+<div class="section" id="upload-data-to-the-cloud">
+<h3>Upload data to the cloud<a class="headerlink" href="#upload-data-to-the-cloud" title="Permalink to this headline">¶</a></h3>
+<p>Next the input data needs to be moved to the cloud – therefore the user can create a data artifact in the workspace like so:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>az ml data upload -n irisdata -v <span class="m">1</span> --path ./data
+</pre></div>
+</div>
+<p>The above command uploads the data from the local folder <cite>.data/</cite> to the <cite>workspaceblobstore</cite> (default). It creates a data entity and registers it under the name <cite>irisdata</cite>.</p>
+</div>
+<div class="section" id="create-your-xgboost-training-job">
+<h3>Create your xgboost training job<a class="headerlink" href="#create-your-xgboost-training-job" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># yaml-language-server: $schema=https://azuremlsdk2.blob.core.windows.net/latest/commandJob.schema.json</span>
+<span class="nt">code</span><span class="p">:</span> 
+  <span class="nt">directory</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">train</span>
+<span class="nt">command</span><span class="p">:</span> <span class="p p-Indicator">&gt;-</span>
+  <span class="no">python train.py </span>
+  <span class="no">--data {inputs.training_data} </span>
+<span class="nt">environment</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">azureml:xgboost-env:1</span>
+<span class="nt">compute</span><span class="p">:</span>
+  <span class="nt">target</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">azureml:goazurego</span>
+<span class="nt">inputs</span><span class="p">:</span>
+  <span class="nt">training_data</span><span class="p">:</span>
+    <span class="nt">data</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">azureml:irisdata:1</span>
+    <span class="nt">mode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Mount</span>
+</pre></div>
+</div>
+<p>To submit the job:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">az ml job create --file iris-job.yml --name &lt;unique name&gt; --query metadata.interaction_endpoints.studio</span>
+</pre></div>
+</div>
+<p>The query parameter will return just the studio url for the run, rather than the entire job object. To view the entire job object,
+we can use the CLI to show this job:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>az ml job show &lt;name of previous job&gt;
+</pre></div>
+</div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># yaml-language-server: $schema=https://azuremlsdk2.blob.core.windows.net/latest/commandJob.schema.json</span>
+<span class="nt">command</span><span class="p">:</span> <span class="p p-Indicator">&gt;-</span>
+  <span class="no">python train.py</span>
+  <span class="no">--data {inputs.training_data}</span>
+<span class="nt">environment</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">azureml:xgboost-env:1</span>
+<span class="nt">compute</span><span class="p">:</span>
+  <span class="nt">target</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">azureml:&lt;compute-name&gt;</span>
+<span class="nt">code</span><span class="p">:</span>
+  <span class="nt">directory</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">train</span>
+<span class="nt">inputs</span><span class="p">:</span>
+  <span class="nt">training_data</span><span class="p">:</span>
+    <span class="nt">data</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">azureml:irisdata:1</span>
+    <span class="nt">mode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Mount</span>
+</pre></div>
+</div>
+<p>The above job can be run without reference to the dataset, by removing the inputs and the arg in the command, since the script sets the default value if no data is input.
+This is to allow further debugging if data store does not work.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># yaml-language-server: $schema=https://azuremlsdk2.blob.core.windows.net/latest/commandJob.schema.json</span>
+<span class="nt">command</span><span class="p">:</span> <span class="p p-Indicator">&gt;-</span>
+  <span class="no">python train.py</span>
+<span class="nt">environment</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">azureml:xgboost-env:1</span>
+<span class="nt">compute</span><span class="p">:</span>
+  <span class="nt">target</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">azureml:&lt;compute-name&gt;</span>
+<span class="nt">code</span><span class="p">:</span>
+  <span class="nt">directory</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">train</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="sweep-jobs-hyperparameter-tuning">
+<h2>Sweep Jobs (Hyperparameter Tuning)<a class="headerlink" href="#sweep-jobs-hyperparameter-tuning" title="Permalink to this headline">¶</a></h2>
+<p>A Sweep job executes a hyperparameter sweep of a specific search space for a job. The below yaml uses the command job from the previous section as the ‘trial’ job in the sweep. It sweeps over different learning rates and subsample rates for each child run. The search space parameters will be passed as arguments to the command in the trial job.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># yaml-language-server: $schema=https://azuremlsdk2.blob.core.windows.net/latest/sweepJob.schema.json</span>
+<span class="nt">experiment_name</span><span class="p">:</span> <span class="s">"sweep-trial-v3"</span>
+<span class="nt">algorithm</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">random</span>
+<span class="nt">job_type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Sweep</span>
+<span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">test_v3111</span>
+<span class="nt">search_space</span><span class="p">:</span>
+  <span class="nt">learning-rate</span><span class="p">:</span>
+    <span class="nt">spec</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">uniform</span>
+    <span class="nt">min_value</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.001</span>
+    <span class="nt">max_value</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.1</span>
+  <span class="nt">subsample</span><span class="p">:</span>
+    <span class="nt">spec</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">uniform</span>
+    <span class="nt">min_value</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.1</span>
+    <span class="nt">max_value</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1.0</span>    
+<span class="nt">objective</span><span class="p">:</span>
+  <span class="nt">primary_metric</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">accuracy</span>
+  <span class="nt">goal</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">maximize</span>
+<span class="nt">trial</span><span class="p">:</span>
+  <span class="nt">command</span><span class="p">:</span> <span class="p p-Indicator">&gt;-</span>
+    <span class="no">python train.py --data {inputs.training_data}</span>
+  <span class="nt">environment</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">azureml:xgboost-env:1</span>
+  <span class="nt">compute</span><span class="p">:</span>
+    <span class="nt">target</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">azureml:goazurego</span>
+  <span class="nt">code</span><span class="p">:</span> 
+    <span class="nt">directory</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">train</span>
+  <span class="nt">inputs</span><span class="p">:</span>
+    <span class="nt">training_data</span><span class="p">:</span>
+      <span class="nt">data</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">azureml:irisdata:1</span>
+      <span class="nt">mode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Mount</span>
+<span class="nt">limits</span><span class="p">:</span>
+  <span class="nt">max_total_runs</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+  <span class="nt">max_concurrent_runs</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+  <span class="nt">max_duration_minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">20</span>
+</pre></div>
+</div>
+<p>This can be executed by running (after setting compute name in yaml):</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">az ml job create --file iris-sweep.yml</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="other-job-types">
+<h2>Other Job Types<a class="headerlink" href="#other-job-types" title="Permalink to this headline">¶</a></h2>
+<p>Coming soon:</p>
+<ul class="simple">
+<li><p>PipelineJob</p></li>
+<li><p>AutoMLJob (s)</p></li>
+</ul>
+</div>
+</div>
+
+      </article>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="distributed-training.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Distributed Training</div>
+              </div>
+              <svg><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../overview/setup.html">
+              <svg><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Cloud Setup</div>
+                
+              </div>
+            </a>
+        </div>
+
+        <div class="related-information">
+              Copyright &#169; 2020, Microsoft
+            |
+            Built with <a href="https://www.sphinx-doc.org/">Sphinx</a>
+              and
+              <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+              <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
+            |
+            <a class="muted-link" href="../_sources/quickstart/jobs.rst.txt"
+               rel="nofollow">
+              Show Source
+            </a>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            Contents
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Train Models (Create Jobs)</a><ul>
+<li><a class="reference internal" href="#create-your-first-job">Create your first job</a><ul>
+<li><a class="reference internal" href="#understanding-a-job-specification">Understanding a job specification</a></li>
+<li><a class="reference internal" href="#real-training-examples">Real training examples</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#train-an-xgboost-model">Train an XGBoost model</a><ul>
+<li><a class="reference internal" href="#define-your-environment">Define your environment</a></li>
+<li><a class="reference internal" href="#upload-data-to-the-cloud">Upload data to the cloud</a></li>
+<li><a class="reference internal" href="#create-your-xgboost-training-job">Create your xgboost training job</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#sweep-jobs-hyperparameter-tuning">Sweep Jobs (Hyperparameter Tuning)</a></li>
+<li><a class="reference internal" href="#other-job-types">Other Job Types</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </main>
+</div>
+  </body>
+</html>
