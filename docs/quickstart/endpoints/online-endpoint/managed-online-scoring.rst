@@ -1,3 +1,0 @@
-managed online scoring
-======================
-a

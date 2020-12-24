@@ -1,5 +1,17 @@
+.. _canary-gitops-flow:
+
 Canary Flow with Gitops
-======================
+========================
+
+`Canary release <https://martinfowler.com/bliki/CanaryRelease.html>`_ is a deployment approach in which new version of a 
+service is introduced to production by rolling out the change to small subset of users/requests before rolling it out 
+completely. 
+
+In the example below, we will start by creating a new endpoint with a deployment (v1 of the model, that we call blue).
+Then we will scale this deployment to handle more requests. Once we are ready to launch v2 of the model (called green), 
+we will do so safely by performing a canary release: Deploy the v2 (i.e. green) but taking no live traffic yet, test
+the deployment in isolation, then gradually divert live production traffic (say 10%) to green deployment, and finally,
+make the 100% traffic switch to green and delete blue.
 
 What is GitOps
 --------------
