@@ -57,3 +57,7 @@ Minimal endpoint specification - batch
   az ml endpoint create --file batchendpoint.yml
   `
 
+.. toctree::
+   :hidden:
+
+   endpoints/online-endpoint/online-endpoint.rst    
